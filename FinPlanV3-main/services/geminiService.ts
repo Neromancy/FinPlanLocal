@@ -2,7 +2,7 @@ import { Category, Goal, Transaction } from "../types.ts";
 
 // Alamat backend Python yang berjalan secara lokal.
 // Saat deploy, ganti ini dengan URL publik Anda (misal: dari Render.com).
-const BACKEND_URL = "https://finplanv3.vercel.app";
+const BACKEND_URL = "http://127.0.0.1:5001";
 
 // --- Helper untuk mengubah file menjadi Base64 (tetap di frontend) ---
 const fileToBase64 = (file: File): Promise<string> => {
