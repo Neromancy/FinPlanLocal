@@ -1,0 +1,1528 @@
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\combinecode.py
+==================================================
+
+import os
+
+def combine_program_files(directory_path, output_filename="combined_code.txt"):
+    """
+    Traverses a directory, reads the content of program files,
+    and combines them into a single output file.
+
+    Args:
+        directory_path (str): The path to the directory to be scanned.
+        output_filename (str): The name of the file to store the combined code.
+    """
+    # A list of common programming file extensions to look for.
+    # You can customize this list to include or exclude file types.
+    programming_extensions = [
+        '.py', '.java', '.c', '.h', '.cpp', '.hpp', '.js', '.html', '.css',
+        '.ts', '.cs', '.go', '.php', '.rb', '.swift', '.kt', '.scala', '.m'
+    ]
+
+    # Check if the provided path is a valid directory.
+    if not os.path.isdir(directory_path):
+        print(f"Error: The path '{directory_path}' is not a valid directory.")
+        return
+
+    with open(output_filename, 'w', encoding='utf-8') as outfile:
+        # os.walk recursively goes through the directory tree.
+        for dirpath, _, filenames in os.walk(directory_path):
+            for filename in filenames:
+                # Check if the file has one of the specified extensions.
+                if any(filename.endswith(ext) for ext in programming_extensions):
+                    file_path = os.path.join(dirpath, filename)
+                    
+                    try:
+                        with open(file_path, 'r', encoding='utf-8', errors='ignore') as infile:
+                            # Write a header for each file to identify its content.
+                            outfile.write(f"\n{'='*50}\n")
+                            outfile.write(f"// File: {file_path}\n")
+                            outfile.write(f"{'='*50}\n\n")
+                            
+                            # Write the content of the file to the output file.
+                            outfile.write(infile.read())
+                            outfile.write("\n")
+                            
+                    except Exception as e:
+                        print(f"Could not read file {file_path}: {e}")
+
+    print(f"All program files have been combined into '{output_filename}'")
+
+if __name__ == "__main__":
+    # Prompt the user to enter the directory path.
+    folder_path = input("Enter the path to the folder: ")
+    combine_program_files(folder_path)
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\constants.ts
+==================================================
+
+
+export const GAMIFICATION_POINTS = {
+  ADD_TRANSACTION: 10,
+  CREATE_GOAL: 25,
+  COMPLETE_GOAL: 100,
+};
+
+export const MOCK_RECEIPT_IMAGE_URL = 'https://picsum.photos/seed/receipt/400/600';
+
+export const DEFAULT_CATEGORIES: string[] = [
+  'Groceries', 'Utilities', 'Rent/Mortgage', 'Transportation', 'Entertainment',
+  'Dining Out', 'Shopping', 'Healthcare', 'Salary', 'Investment', 'Savings', 'Other'
+];
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\index.html
+==================================================
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.23.0"
+      }
+    }
+    </script>
+    <!-- Add Babel for in-browser JSX/TSX transpilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinPlan - AI Finance Manager</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23218C74' stroke-width='1.5' fill='none'/%3E%3Cpath d='M7 15L10 12L13 14L17 10' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 10H14' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 10V13' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1?plugins=typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            },
+            colors: {
+              'primary': '#218C74',
+              'secondary': '#B97A56',
+              'background': '#F9F9F9',
+              'surface': '#FFFFFF',
+              'text-primary': '#2d3748',
+              'text-secondary': '#718096',
+              'accent': '#F39C12',
+              'danger': '#c0392b',
+
+              'dark-background': '#1a202c',
+              'dark-surface': '#2d3748',
+              'dark-text-primary': '#f7fafc',
+              'dark-text-secondary': '#a0aec0',
+              'dark-border': '#4a5568',
+            },
+            keyframes: {
+              'modal-enter': {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              }
+            },
+            animation: {
+              'modal-enter': 'modal-enter 0.2s ease-out',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- The type is changed to "text/babel" and data-type="module" is added -->
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+  </body>
+</html>
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\types.ts
+==================================================
+
+export enum View {
+  Dashboard = 'Dashboard',
+  Transactions = 'Transactions',
+  Goals = 'Goals',
+  Budgets = 'Budgets',
+  Recurring = 'Recurring',
+  Categories = 'Categories',
+  Reports = 'Reports',
+  Profile = 'Profile',
+}
+
+export type TransactionType = 'income' | 'expense';
+export type Frequency = 'daily' | 'weekly' | 'monthly' | 'yearly';
+
+export type Category = string;
+
+export interface Transaction {
+  id: string;
+  description: string;
+  amount: number;
+  type: TransactionType;
+  category: Category;
+  date: string; // YYYY-MM-DD
+  recurringId?: string;
+}
+
+export interface Goal {
+  id: string;
+  name: string;
+  targetAmount: number;
+  savedAmount: number;
+  isCompleted: boolean;
+  createdAt: string; // YYYY-MM-DD
+  completedAt?: string; // YYYY-MM-DD
+  aiPlan?: string;
+}
+
+export interface RecurringTransaction {
+  id: string;
+  description: string;
+  amount: number;
+  type: TransactionType;
+  category: Category;
+  frequency: Frequency;
+  startDate: string; // YYYY-MM-DD
+  endDate?: string; // YYYY-MM-DD
+  isActive: boolean;
+}
+
+export interface User {
+  isPremium: boolean;
+  points: number;
+}
+
+export interface Budget {
+  id: string;
+  category: Category;
+  limit: number;
+}
+
+export interface RegisteredUser {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    language?: 'en' | 'id' | 'ja';
+    profilePictureUrl?: string;
+}
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\vite.config.ts
+==================================================
+
+import path from 'path';
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, '.', '');
+    return {
+      server: {
+        port: 3000,
+        host: '0.0.0.0',
+      },
+      plugins: [react()],
+      define: {
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '.'),
+        }
+      }
+    };
+});
+
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\hooks\useLocalStorage.ts
+==================================================
+
+import React, { useState, useEffect } from 'react';
+
+export function useLocalStorage<T,>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      const valueToStore =
+        typeof storedValue === 'function'
+          ? (storedValue as (val: T) => T)(storedValue)
+          : storedValue;
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [key, storedValue]);
+
+  return [storedValue, setStoredValue];
+}
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\services\geminiService.ts
+==================================================
+
+
+import { GoogleGenAI, GenerateContentResponse, Type } from "@google/genai";
+import { Category, Goal, Transaction } from '../types.ts';
+
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+// Helper to convert file to base64
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
+};
+
+
+export const categorizeTransaction = async (description: string, categories: string[]): Promise<{ category: Category; confidence: number }> => {
+  try {
+    const prompt = `Analyze the transaction description "${description}" and categorize it into one of the following valid categories: ${categories.join(', ')}. Also, provide a confidence score between 0.0 and 1.0 for your categorization.`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            category: {
+              type: Type.STRING,
+              description: `The transaction category. Must be one of: ${categories.join(', ')}`,
+            },
+            confidence: {
+              type: Type.NUMBER,
+              description: "A value between 0 and 1 representing the model's confidence in the categorization."
+            }
+          },
+          required: ['category', 'confidence']
+        }
+      }
+    });
+
+    const jsonString = response.text.trim();
+    if (!jsonString) {
+      console.error("No JSON found in AI response for categorization");
+      return { category: 'Other', confidence: 0 };
+    }
+
+    const result = JSON.parse(jsonString);
+    const category = result.category as Category;
+    const confidence = result.confidence as number;
+    
+    if (categories.includes(category) && typeof confidence === 'number') {
+        return { category, confidence };
+    }
+    
+    return { category: 'Other', confidence: 0 };
+
+  } catch (error) {
+    console.error("Error categorizing transaction:", error);
+    return { category: 'Other', confidence: 0 };
+  }
+};
+
+export const scanReceipt = async (imageFile: File): Promise<{ merchant: string; total: number; date: string }> => {
+    try {
+        const base64Image = await fileToBase64(imageFile);
+        const imagePart = {
+            inlineData: {
+                mimeType: imageFile.type,
+                data: base64Image,
+            },
+        };
+        const textPart = {
+            text: "Extract the merchant name, total amount, and date from this receipt. The date should be in YYYY-MM-DD format."
+        };
+
+        const response: GenerateContentResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: { parts: [imagePart, textPart] },
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        merchant: { type: Type.STRING },
+                        total: { type: Type.NUMBER },
+                        date: { type: Type.STRING }
+                    },
+                    required: ['merchant', 'total', 'date']
+                }
+            }
+        });
+
+        const jsonString = response.text.trim();
+        if (!jsonString) {
+          throw new Error("Failed to extract valid JSON from receipt analysis.");
+        }
+        const result = JSON.parse(jsonString);
+        return {
+            merchant: result.merchant || '',
+            total: result.total || 0,
+            date: result.date || new Date().toISOString().split('T')[0],
+        };
+    } catch (error) {
+        console.error("Error scanning receipt:", error);
+        throw new Error("Failed to analyze receipt. Please try again.");
+    }
+};
+
+
+export const suggestGoals = async (financialSummary: { income: number; expenses: number; balance: number }): Promise<Omit<Goal, 'id' | 'savedAmount' | 'isCompleted' | 'createdAt'>[]> => {
+  try {
+    const prompt = `A user has a monthly income of $${financialSummary.income}, expenses of $${financialSummary.expenses}, and a balance of $${financialSummary.balance}. Suggest three realistic, personalized savings goals with target amounts. Examples: "Emergency Fund", "Vacation", "New Gadget".`;
+
+    const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    goals: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                name: { type: Type.STRING },
+                                targetAmount: { type: Type.NUMBER }
+                            },
+                             required: ['name', 'targetAmount']
+                        }
+                    }
+                },
+                required: ['goals']
+            }
+        }
+    });
+
+    const jsonString = response.text.trim();
+    if (!jsonString) {
+      console.error("No JSON found in AI response for goal suggestion");
+      return [];
+    }
+    const result = JSON.parse(jsonString);
+    return result.goals || [];
+  } catch (error) {
+    console.error("Error suggesting goals:", error);
+    return [];
+  }
+};
+
+export const generateBudgetPlan = async (
+  goal: Goal, 
+  transactions: Transaction[], 
+  balance: number, 
+  language: 'en' | 'id' | 'ja',
+  formatCurrency: (amount: number) => string
+): Promise<string> => {
+  try {
+    const recentTransactions = transactions
+      .filter(t => t.type === 'expense')
+      .slice(0, 20)
+      .map(t => `${t.description}: ${formatCurrency(t.amount)} in ${t.category}`).join('\n');
+
+    let languageInstruction = 'Generate the entire plan in English.';
+    if (language === 'id') {
+      languageInstruction = 'Generate the entire plan in Indonesian.';
+    } else if (language === 'ja') {
+      languageInstruction = 'Generate the entire plan in Japanese.';
+    }
+
+    const prompt = `
+A user wants to save for "${goal.name}" with a target of ${formatCurrency(goal.targetAmount)}. They have already saved ${formatCurrency(goal.savedAmount)}.
+Their current balance is ${formatCurrency(balance)}.
+${languageInstruction}
+
+Here are their 20 most recent expense transactions:
+${recentTransactions}
+
+Generate a custom budget plan in markdown format. The plan MUST be concise and consist of a summary and bullet points under bold headers. **Do not write long paragraphs.**
+
+Follow this structure exactly:
+
+**Summary**
+* A brief, encouraging overview and a projected timeline to reach the goal.
+
+**Spending Limits**
+* A bulleted list of suggested monthly spending limits for their top 3-4 expense categories.
+
+**Savings Tips**
+* A bulleted list of 3 actionable savings tips based on their actual spending habits.
+
+Use ONLY bullet points (*).
+
+${goal.aiPlan ? `This is an updated plan. Their previous plan was:\n${goal.aiPlan}\nComment on their progress and adjust the new plan, keeping the same format.` : ''}
+    `;
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+    });
+    return response.text;
+  } catch (error) {
+    console.error("Error generating budget plan:", error);
+    return "Could not generate an AI budget plan. Please try again.";
+  }
+};
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\translations\en.ts
+==================================================
+
+export const en = {
+  login: {
+    welcome: 'Welcome back!',
+    emailPlaceholder: 'Email Address',
+    passwordPlaceholder: 'Password',
+    loginButton: 'Login',
+    noAccount: "Don't have an account?",
+    registerLink: 'Register here',
+    error: 'Invalid email or password. Please try again.',
+    quickLogin: 'Quick Login',
+    clickToLogin: 'Click to log in',
+    clickToLoginAs: 'Log in as',
+    or: 'Or',
+    addAccount: 'Add Account',
+  },
+  register: {
+    title: 'Create your account',
+    namePlaceholder: 'Full Name',
+    emailPlaceholder: 'Email Address',
+    passwordPlaceholder: 'Password',
+    registerButton: 'Create Account',
+    hasAccount: 'Already have an account?',
+    loginLink: 'Login here',
+    success: 'Registration successful! Please log in.',
+    error: 'An account with this email already exists.',
+  },
+  language: {
+    title: 'Choose Your Language',
+    subtitle: 'Pilih Bahasa Anda',
+    englishButton: 'English',
+    indonesianButton: 'Bahasa Indonesia',
+    japaneseButton: 'Japanese',
+  },
+  sidebar: {
+    dashboard: 'Dashboard',
+    transactions: 'Transactions',
+    goals: 'Goals',
+    budgets: 'Budgets',
+    recurring: 'Recurring',
+    categories: 'Categories',
+    reports: 'Reports',
+    profile: 'Profile',
+    viewProfile: 'View Profile',
+    points: 'Points',
+    upgradeButton: 'Upgrade to Premium',
+    premiumMember: 'Premium Member',
+    logout: 'Logout',
+  },
+  profile: {
+    title: 'My Profile',
+    accountSettings: 'Account Settings',
+    changePicture: 'Change Picture',
+    nameLabel: 'Name',
+    emailLabel: 'Email',
+    passwordLabel: 'Password',
+    edit: 'Edit',
+    save: 'Save',
+    cancel: 'Cancel',
+    currentPassword: 'Current Password',
+    newPassword: 'New Password',
+    confirmPassword: 'Confirm New Password',
+    errors: {
+      currentPassword: 'Current password does not match.',
+      passwordLength: 'New password must be at least 6 characters.',
+      passwordMismatch: 'New passwords do not match.',
+    },
+  },
+  premiumModal: {
+    title: 'Unlock FinPlan Premium',
+    description: 'Take control of your finances with our most powerful features.',
+    feature1: {
+      title: 'AI-Powered Insights',
+      description: 'Get smart goal suggestions and automatic receipt scanning.',
+    },
+    feature2: {
+      title: 'Advanced Budgeting',
+      description: 'Create detailed budgets and get personalized savings plans.',
+    },
+    feature3: {
+      title: 'Unlimited Reports',
+      description: 'Generate comprehensive financial reports anytime.',
+    },
+    upgradeButton: 'Upgrade Now',
+  },
+  dashboard: {
+    title: 'Dashboard',
+    totalIncome: 'Total Income',
+    totalExpenses: 'Total Expenses',
+    currentBalance: 'Current Balance',
+    budgetBreakdown: {
+      title: "This Month's Spending",
+      spent: 'Spent',
+      remaining: 'Remaining',
+    },
+    budgetSummary: {
+      title: 'Budget Summary',
+      noBudgets: 'No budgets set for this month.'
+    },
+    goalsOverview: {
+      title: 'Goals Overview',
+      overallProgress: 'Overall Progress',
+      activeGoals: 'Active Goals',
+      noActiveGoals: 'No active goals. Time to set one!',
+    },
+    expensesByCategory: {
+      title: 'Monthly Expenses by Category',
+      noData: 'No expense data for this month.',
+    }
+  },
+  transactions: {
+    title: 'Transactions',
+    addTransactionButton: 'Add Transaction',
+    scanReceiptButton: 'Scan Receipt',
+    editModalTitle: 'Edit Transaction',
+    addModalTitle: 'Add New Transaction',
+    form: {
+        description: 'Description',
+        amount: 'Amount',
+        date: 'Date',
+        type: 'Type',
+        types: {
+            expense: 'Expense',
+            income: 'Income'
+        },
+        category: 'Category',
+        aiSuggestion: {
+            text: 'AI Suggestion:',
+            confidence: 'confidence',
+            accept: 'Accept',
+            dismiss: 'Dismiss',
+        },
+        fillAllFieldsError: 'Please fill all fields.',
+        saveChangesButton: 'Save Changes',
+        addButton: 'Add Transaction'
+    },
+    list: {
+        searchLabel: 'Search description',
+        searchPlaceholder: 'e.g., Coffee shop',
+        typeLabel: 'Type',
+        allTypes: 'All Types',
+        income: 'Income',
+        expense: 'Expense',
+        categoryLabel: 'Category',
+        allCategories: 'All Categories',
+        startDateLabel: 'Start Date',
+        endDateLabel: 'End Date',
+        header: {
+            description: 'Description',
+            amount: 'Amount',
+            category: 'Category',
+            date: 'Date',
+            actions: 'Actions',
+        },
+        editButton: 'Edit',
+        deleteButton: 'Delete',
+        noTransactions: 'No transactions match your filters.'
+    }
+  },
+  goals: {
+    title: 'Savings Goals',
+    filters: {
+        active: 'Active',
+        completed: 'Completed',
+        all: 'All'
+    },
+    addGoalButton: 'Add Goal',
+    aiSuggestButton: 'Suggest Goals (AI)',
+    aiLoadingButton: 'Thinking...',
+    aiError: 'Failed to get AI suggestions. Please try again.',
+    modalTitle: 'Add New Goal',
+    form: {
+        nameLabel: 'Goal Name',
+        namePlaceholder: 'e.g., Vacation to Bali',
+        targetAmountLabel: 'Target Amount',
+        targetAmountPlaceholder: 'e.g., 2000',
+        addButton: 'Add Goal',
+        fillAllFieldsError: 'Please enter a name and target amount.'
+    },
+    list: {
+        addFunds: 'Add Funds',
+        cancel: 'Cancel',
+        generatePlan: 'Generate AI Budget Plan',
+        refreshPlan: 'Refresh Plan',
+        generating: 'Generating...',
+        planError: 'Failed to generate budget plan.',
+        completedOn: 'Completed on',
+        durationText: 'Took {{duration}} to achieve',
+        duration: {
+            day: 'about a day',
+            days: '{{count}} days',
+            month: 'about a month',
+            months: 'about {{count}} months',
+        },
+        aiPlanTitle: 'AI Budget Plan',
+        noGoals: 'No goals match the current filter.',
+        addFundsSave: 'Save',
+        addFundsPlaceholder: 'Amount',
+        remaining: '{{amount}} left to reach goal'
+    }
+  },
+  budgets: {
+    title: 'Monthly Budgets',
+    addButton: 'Add Budget',
+    editModalTitle: 'Edit Budget',
+    addModalTitle: 'Add New Budget',
+    card: {
+        spent: 'Spent',
+        limit: 'Limit',
+        remaining: 'remaining',
+        overBudget: 'over budget',
+        editButton: 'Edit',
+        deleteButton: 'Delete'
+    },
+    list: {
+        noBudgets: "No budgets set yet. Click 'Add Budget' to create your first one."
+    },
+    form: {
+        categoryLabel: 'Category',
+        limitLabel: 'Monthly Limit',
+        limitPlaceholder: 'e.g., 500',
+        error: 'Please select a category and enter a valid limit greater than 0.',
+        saveButton: 'Save Changes',
+        createButton: 'Create Budget',
+        categoryExistsError: 'A budget for "{{category}}" already exists.',
+        noCategories: 'No available categories',
+        categoryUnchangeable: 'Category cannot be changed once a budget is created.'
+    }
+  },
+  recurring: {
+    title: 'Recurring Transactions',
+    addButton: 'Add Recurring',
+    modalTitle: 'New Recurring Transaction',
+    list: {
+        header: {
+            status: 'Status',
+            description: 'Description',
+            amount: 'Amount',
+            frequency: 'Frequency',
+            nextDate: 'Next Date',
+            actions: 'Actions'
+        },
+        deleteButton: 'Delete',
+        ended: 'Ended',
+        noRecurring: 'No recurring transactions scheduled.'
+    },
+    form: {
+        descriptionLabel: 'Description',
+        amountLabel: 'Amount',
+        typeLabel: 'Type',
+        types: {
+            expense: 'Expense',
+            income: 'Income'
+        },
+        categoryLabel: 'Category',
+        frequencyLabel: 'Frequency',
+        frequencies: {
+            daily: 'Daily',
+            weekly: 'Weekly',
+            monthly: 'Monthly',
+            yearly: 'Yearly'
+        },
+        startDateLabel: 'Start Date',
+        endDateLabel: 'End Date (Optional)',
+        addButton: 'Add Schedule',
+        fillFieldsError: 'Please fill all required fields.'
+    }
+  },
+  categories: {
+    title: 'Manage Categories',
+    addButton: 'Add New Category',
+    list: {
+        editButton: 'Edit',
+        deleteButton: 'Delete',
+        noCategories: 'No custom categories yet.'
+    },
+    deleteConfirmation: 'Are you sure you want to delete the category "{{category}}"? All associated transactions will be moved to "Other".',
+    deleteOtherError: "The 'Other' category cannot be deleted.",
+    modal: {
+        addTitle: 'Add New Category',
+        editTitle: 'Edit Category',
+        label: 'Category Name',
+        placeholder: 'e.g., Subscriptions',
+        cancelButton: 'Cancel',
+        addButton: 'Add Category',
+        saveButton: 'Save Changes'
+    }
+  },
+  reports: {
+    title: 'Financial Reports',
+    dateRangeLabel: 'Date Range',
+    ranges: {
+        currentMonth: 'Current Month',
+        lastMonth: 'Last Month',
+        last90Days: 'Last 90 Days',
+        thisYear: 'This Year',
+        allTime: 'All Time',
+        custom: 'Custom Range'
+    },
+    startDateLabel: 'Start Date',
+    endDateLabel: 'End Date',
+    summary: {
+        totalIncome: 'Total Income',
+        totalExpenses: 'Total Expenses',
+        netSavings: 'Net Savings'
+    },
+    charts: {
+        expenseBreakdown: 'Expense Breakdown',
+        incomeVsExpense: 'Income vs. Expense',
+        income: 'Income',
+        expense: 'Expense',
+        noExpenseData: 'No expense data for this period.'
+    },
+    details: {
+        title: 'Transaction Details',
+        header: {
+            date: 'Date',
+            description: 'Description',
+            category: 'Category',
+            amount: 'Amount'
+        },
+        noTransactions: 'No transactions in this period.'
+    }
+  },
+  errors: {
+    noIncomeRecorded: "Current Balance is not yet available. Please add an income transaction first.",
+    insufficientBalance: "Your Current Balance is insufficient for this transaction."
+  },
+  loading: {
+    processing: 'Processing...',
+    scanning: 'Scanning Receipt...',
+    suggestingGoals: 'Suggesting Goals...',
+    generatingPlan: 'Generating AI Plan...',
+    uploading: 'Uploading Picture...',
+  },
+  premiumFeatureLock: {
+    tooltip: 'Upgrade to Premium to use this feature!',
+  }
+};
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\translations\id.ts
+==================================================
+
+export const id = {
+  login: {
+    welcome: 'Selamat datang kembali!',
+    emailPlaceholder: 'Alamat Email',
+    passwordPlaceholder: 'Kata Sandi',
+    loginButton: 'Masuk',
+    noAccount: 'Belum punya akun?',
+    registerLink: 'Daftar di sini',
+    error: 'Email atau kata sandi salah. Silakan coba lagi.',
+    quickLogin: 'Login Cepat',
+    clickToLogin: 'Klik untuk masuk',
+    clickToLoginAs: 'Masuk sebagai',
+    or: 'Atau',
+    addAccount: 'Tambahkan Akun',
+  },
+  register: {
+    title: 'Buat akun Anda',
+    namePlaceholder: 'Nama Lengkap',
+    emailPlaceholder: 'Alamat Email',
+    passwordPlaceholder: 'Kata Sandi',
+    registerButton: 'Buat Akun',
+    hasAccount: 'Sudah punya akun?',
+    loginLink: 'Masuk di sini',
+    success: 'Pendaftaran berhasil! Silakan masuk.',
+    error: 'Akun dengan email ini sudah ada.',
+  },
+  language: {
+    title: 'Pilih Bahasa Anda',
+    subtitle: 'Choose Your Language',
+    englishButton: 'English',
+    indonesianButton: 'Bahasa Indonesia',
+    japaneseButton: 'Bahasa Jepang',
+  },
+  sidebar: {
+    dashboard: 'Dasbor',
+    transactions: 'Transaksi',
+    goals: 'Tujuan',
+    budgets: 'Anggaran',
+    recurring: 'Berulang',
+    categories: 'Kategori',
+    reports: 'Laporan',
+    profile: 'Profil',
+    viewProfile: 'Lihat Profil',
+    points: 'Poin',
+    upgradeButton: 'Tingkatkan ke Premium',
+    premiumMember: 'Anggota Premium',
+    logout: 'Keluar',
+  },
+  profile: {
+    title: 'Profil Saya',
+    accountSettings: 'Pengaturan Akun',
+    changePicture: 'Ganti Foto',
+    nameLabel: 'Nama',
+    emailLabel: 'Email',
+    passwordLabel: 'Kata Sandi',
+    edit: 'Ubah',
+    save: 'Simpan',
+    cancel: 'Batal',
+    currentPassword: 'Kata Sandi Saat Ini',
+    newPassword: 'Kata Sandi Baru',
+    confirmPassword: 'Konfirmasi Kata Sandi Baru',
+    errors: {
+      currentPassword: 'Kata sandi saat ini tidak cocok.',
+      passwordLength: 'Kata sandi baru harus minimal 6 karakter.',
+      passwordMismatch: 'Kata sandi baru tidak cocok.',
+    },
+  },
+  premiumModal: {
+    title: 'Buka FinPlan Premium',
+    description: 'Kendalikan keuangan Anda dengan fitur terkuat kami.',
+    feature1: {
+      title: 'Wawasan Berbasis AI',
+      description: 'Dapatkan saran tujuan cerdas dan pemindaian struk otomatis.',
+    },
+    feature2: {
+      title: 'Penganggaran Lanjutan',
+      description: 'Buat anggaran terperinci dan dapatkan rencana tabungan pribadi.',
+    },
+    feature3: {
+      title: 'Laporan Tanpa Batas',
+      description: 'Hasilkan laporan keuangan komprehensif kapan saja.',
+    },
+    upgradeButton: 'Tingkatkan Sekarang',
+  },
+  dashboard: {
+    title: 'Dasbor',
+    totalIncome: 'Total Pemasukan',
+    totalExpenses: 'Total Pengeluaran',
+    currentBalance: 'Saldo Saat Ini',
+    budgetBreakdown: {
+      title: 'Pengeluaran Bulan Ini',
+      spent: 'Dibelanjakan',
+      remaining: 'Tersisa',
+    },
+    budgetSummary: {
+        title: 'Ringkasan Anggaran',
+        noBudgets: 'Tidak ada anggaran yang ditetapkan untuk bulan ini.'
+    },
+    goalsOverview: {
+      title: 'Gambaran Tujuan',
+      overallProgress: 'Kemajuan Keseluruhan',
+      activeGoals: 'Tujuan Aktif',
+      noActiveGoals: 'Tidak ada tujuan aktif. Saatnya menetapkan satu!',
+    },
+    expensesByCategory: {
+      title: 'Pengeluaran Bulanan per Kategori',
+      noData: 'Tidak ada data pengeluaran untuk periode ini.',
+    }
+  },
+  transactions: {
+    title: 'Transaksi',
+    addTransactionButton: 'Tambah Transaksi',
+    scanReceiptButton: 'Pindai Struk',
+    editModalTitle: 'Ubah Transaksi',
+    addModalTitle: 'Tambah Transaksi Baru',
+    form: {
+        description: 'Deskripsi',
+        amount: 'Jumlah',
+        date: 'Tanggal',
+        type: 'Jenis',
+        types: {
+            expense: 'Pengeluaran',
+            income: 'Pemasukan'
+        },
+        category: 'Kategori',
+        aiSuggestion: {
+            text: 'Saran AI:',
+            confidence: 'keyakinan',
+            accept: 'Terima',
+            dismiss: 'Tolak',
+        },
+        fillAllFieldsError: 'Harap isi semua kolom.',
+        saveChangesButton: 'Simpan Perubahan',
+        addButton: 'Tambah Transaksi'
+    },
+    list: {
+        searchLabel: 'Cari deskripsi',
+        searchPlaceholder: 'cth., Kedai kopi',
+        typeLabel: 'Jenis',
+        allTypes: 'Semua Jenis',
+        income: 'Pemasukan',
+        expense: 'Pengeluaran',
+        categoryLabel: 'Kategori',
+        allCategories: 'Semua Kategori',
+        startDateLabel: 'Tanggal Mulai',
+        endDateLabel: 'Tanggal Selesai',
+        header: {
+            description: 'Deskripsi',
+            amount: 'Jumlah',
+            category: 'Kategori',
+            date: 'Tanggal',
+            actions: 'Aksi',
+        },
+        editButton: 'Ubah',
+        deleteButton: 'Hapus',
+        noTransactions: 'Tidak ada transaksi yang cocok dengan filter Anda.'
+    }
+  },
+  goals: {
+    title: 'Tujuan Tabungan',
+    filters: {
+        active: 'Aktif',
+        completed: 'Selesai',
+        all: 'Semua'
+    },
+    addGoalButton: 'Tambah Tujuan',
+    aiSuggestButton: 'Sarankan Tujuan (AI)',
+    aiLoadingButton: 'Memproses...',
+    aiError: 'Gagal mendapatkan saran AI. Silakan coba lagi.',
+    modalTitle: 'Tambah Tujuan Baru',
+    form: {
+        nameLabel: 'Nama Tujuan',
+        namePlaceholder: 'cth., Liburan ke Bali',
+        targetAmountLabel: 'Jumlah Target',
+        targetAmountPlaceholder: 'cth., 30000000',
+        addButton: 'Tambah Tujuan',
+        fillAllFieldsError: 'Harap masukkan nama dan jumlah target.'
+    },
+    list: {
+        addFunds: 'Tambah Dana',
+        cancel: 'Batal',
+        generatePlan: 'Buat Rencana Anggaran AI',
+        refreshPlan: 'Perbarui Rencana',
+        generating: 'Membuat...',
+        planError: 'Gagal membuat rencana anggaran.',
+        completedOn: 'Selesai pada',
+        durationText: 'Butuh {{duration}} untuk tercapai',
+        duration: {
+            day: 'sekitar sehari',
+            days: '{{count}} hari',
+            month: 'sekitar sebulan',
+            months: 'sekitar {{count}} bulan',
+        },
+        aiPlanTitle: 'Rencana Anggaran AI',
+        noGoals: 'Tidak ada tujuan yang cocok dengan filter saat ini.',
+        addFundsSave: 'Simpan',
+        addFundsPlaceholder: 'Jumlah',
+        remaining: 'Tinggal {{amount}} untuk mencapai tujuan'
+    }
+  },
+  budgets: {
+    title: 'Anggaran Bulanan',
+    addButton: 'Tambah Anggaran',
+    editModalTitle: 'Ubah Anggaran',
+    addModalTitle: 'Tambah Anggaran Baru',
+    card: {
+        spent: 'Terpakai',
+        limit: 'Batas',
+        remaining: 'tersisa',
+        overBudget: 'melebihi anggaran',
+        editButton: 'Ubah',
+        deleteButton: 'Hapus'
+    },
+    list: {
+        noBudgets: "Belum ada anggaran yang ditetapkan. Klik 'Tambah Anggaran' untuk membuat yang pertama."
+    },
+    form: {
+        categoryLabel: 'Kategori',
+        limitLabel: 'Batas Bulanan',
+        limitPlaceholder: 'cth., 5000000',
+        error: 'Harap pilih kategori dan masukkan batas yang valid lebih besar dari 0.',
+        saveButton: 'Simpan Perubahan',
+        createButton: 'Buat Anggaran',
+        categoryExistsError: 'Anggaran untuk "{{category}}" sudah ada.',
+        noCategories: 'Tidak ada kategori yang tersedia',
+        categoryUnchangeable: 'Kategori tidak dapat diubah setelah anggaran dibuat.'
+    }
+  },
+  recurring: {
+    title: 'Transaksi Berulang',
+    addButton: 'Tambah Berulang',
+    modalTitle: 'Transaksi Berulang Baru',
+    list: {
+        header: {
+            status: 'Status',
+            description: 'Deskripsi',
+            amount: 'Jumlah',
+            frequency: 'Frekuensi',
+            nextDate: 'Tanggal Berikutnya',
+            actions: 'Aksi'
+        },
+        deleteButton: 'Hapus',
+        ended: 'Berakhir',
+        noRecurring: 'Tidak ada transaksi berulang yang dijadwalkan.'
+    },
+    form: {
+        descriptionLabel: 'Deskripsi',
+        amountLabel: 'Jumlah',
+        typeLabel: 'Jenis',
+        types: {
+            expense: 'Pengeluaran',
+            income: 'Pemasukan'
+        },
+        categoryLabel: 'Kategori',
+        frequencyLabel: 'Frekuensi',
+        frequencies: {
+            daily: 'Harian',
+            weekly: 'Mingguan',
+            monthly: 'Bulanan',
+            yearly: 'Tahunan'
+        },
+        startDateLabel: 'Tanggal Mulai',
+        endDateLabel: 'Tanggal Selesai (Opsional)',
+        addButton: 'Tambah Jadwal',
+        fillFieldsError: 'Harap isi semua kolom yang wajib diisi.'
+    }
+  },
+  categories: {
+    title: 'Kelola Kategori',
+    addButton: 'Tambah Kategori Baru',
+    list: {
+        editButton: 'Ubah',
+        deleteButton: 'Hapus',
+        noCategories: 'Belum ada kategori kustom.'
+    },
+    deleteConfirmation: 'Apakah Anda yakin ingin menghapus kategori "{{category}}"? Semua transaksi terkait akan dipindahkan ke "Lainnya".',
+    deleteOtherError: "Kategori 'Lainnya' tidak dapat dihapus.",
+    modal: {
+        addTitle: 'Tambah Kategori Baru',
+        editTitle: 'Ubah Kategori',
+        label: 'Nama Kategori',
+        placeholder: 'cth., Langganan',
+        cancelButton: 'Batal',
+        addButton: 'Tambah Kategori',
+        saveButton: 'Simpan Perubahan'
+    }
+  },
+  reports: {
+    title: 'Laporan Keuangan',
+    dateRangeLabel: 'Rentang Tanggal',
+    ranges: {
+        currentMonth: 'Bulan Ini',
+        lastMonth: 'Bulan Lalu',
+        last90Days: '90 Hari Terakhir',
+        thisYear: 'Tahun Ini',
+        allTime: 'Semua Waktu',
+        custom: 'Rentang Kustom'
+    },
+    startDateLabel: 'Tanggal Mulai',
+    endDateLabel: 'Tanggal Selesai',
+    summary: {
+        totalIncome: 'Total Pemasukan',
+        totalExpenses: 'Total Pengeluaran',
+        netSavings: 'Tabungan Bersih'
+    },
+    charts: {
+        expenseBreakdown: 'Rincian Pengeluaran',
+        incomeVsExpense: 'Pemasukan vs. Pengeluaran',
+        income: 'Pemasukan',
+        expense: 'Pengeluaran',
+        noExpenseData: 'Tidak ada data pengeluaran untuk periode ini.'
+    },
+    details: {
+        title: 'Detail Transaksi',
+        header: {
+            date: 'Tanggal',
+            description: 'Deskripsi',
+            category: 'Kategori',
+            amount: 'Jumlah'
+        },
+        noTransactions: 'Tidak ada transaksi pada periode ini.'
+    }
+  },
+  errors: {
+    noIncomeRecorded: "Saldo Saat Ini belum tersedia, mohon untuk tambah pemasukan di transaksi.",
+    insufficientBalance: "Saldo Saat Ini anda tidak mencukupi, harap masukan pemasukan terlebih dahulu di transaksi."
+  },
+  loading: {
+    processing: 'Memproses...',
+    scanning: 'Memindai Struk...',
+    suggestingGoals: 'Menyarankan Tujuan...',
+    generatingPlan: 'Membuat Rencana AI...',
+    uploading: 'Mengunggah Foto...',
+  },
+  premiumFeatureLock: {
+    tooltip: 'Tingkatkan ke Premium untuk menggunakan fitur ini!',
+  }
+};
+
+==================================================
+// File: C:\Users\Pongo\Downloads\FinPlanV3-main\FinPlanV3-main\translations\ja.ts
+==================================================
+
+export const ja = {
+  login: {
+    welcome: 'おかえりなさい！',
+    emailPlaceholder: 'メールアドレス',
+    passwordPlaceholder: 'パスワード',
+    loginButton: 'ログイン',
+    noAccount: 'アカウントをお持ちではありませんか？',
+    registerLink: 'こちらで登録',
+    error: 'メールアドレスまたはパスワードが無効です。もう一度お試しください。',
+    quickLogin: 'クイックログイン',
+    clickToLogin: 'クリックしてログイン',
+    clickToLoginAs: 'としてログイン',
+    or: 'または',
+    addAccount: 'アカウントを追加',
+  },
+  register: {
+    title: 'アカウントを作成',
+    namePlaceholder: '氏名',
+    emailPlaceholder: 'メールアドレス',
+    passwordPlaceholder: 'パスワード',
+    registerButton: 'アカウント作成',
+    hasAccount: 'すでにアカウントをお持ちですか？',
+    loginLink: 'こちらでログイン',
+    success: '登録が成功しました！ログインしてください。',
+    error: 'このメールアドレスのアカウントは既に存在します。',
+  },
+  language: {
+    title: '言語を選択してください',
+    subtitle: 'Choose Your Language',
+    englishButton: 'English',
+    indonesianButton: 'Bahasa Indonesia',
+    japaneseButton: '日本語',
+  },
+  sidebar: {
+    dashboard: 'ダッシュボード',
+    transactions: '取引',
+    goals: '目標',
+    budgets: '予算',
+    recurring: '繰り返し',
+    categories: 'カテゴリ',
+    reports: 'レポート',
+    profile: 'プロフィール',
+    viewProfile: 'プロフィールを見る',
+    points: 'ポイント',
+    upgradeButton: 'プレミアムにアップグレード',
+    premiumMember: 'プレミアム会員',
+    logout: 'ログアウト',
+  },
+  profile: {
+    title: 'マイプロフィール',
+    accountSettings: 'アカウント設定',
+    changePicture: '写真を変更',
+    nameLabel: '名前',
+    emailLabel: 'メール',
+    passwordLabel: 'パスワード',
+    edit: '編集',
+    save: '保存',
+    cancel: 'キャンセル',
+    currentPassword: '現在のパスワード',
+    newPassword: '新しいパスワード',
+    confirmPassword: '新しいパスワードの確認',
+    errors: {
+      currentPassword: '現在のパスワードが一致しません。',
+      passwordLength: '新しいパスワードは6文字以上である必要があります。',
+      passwordMismatch: '新しいパスワードが一致しません。',
+    },
+  },
+  premiumModal: {
+    title: 'FinPlanプレミアムをアンロック',
+    description: '最も強力な機能であなたの財政を管理しましょう。',
+    feature1: {
+      title: 'AIによる洞察',
+      description: '賢い目標提案と自動レシートスキャンをご利用いただけます。',
+    },
+    feature2: {
+      title: '高度な予算管理',
+      description: '詳細な予算を作成し、パーソナライズされた貯蓄計画を得られます。',
+    },
+    feature3: {
+      title: '無制限のレポート',
+      description: 'いつでも包括的な財務レポートを生成できます。',
+    },
+    upgradeButton: '今すぐアップグレード',
+  },
+  dashboard: {
+    title: 'ダッシュボード',
+    totalIncome: '総収入',
+    totalExpenses: '総支出',
+    currentBalance: '現在の残高',
+    budgetBreakdown: {
+      title: '今月の支出',
+      spent: '支出済み',
+      remaining: '残り',
+    },
+    budgetSummary: {
+      title: '予算概要',
+      noBudgets: '今月の予算は設定されていません。'
+    },
+    goalsOverview: {
+      title: '目標概要',
+      overallProgress: '全体の進捗',
+      activeGoals: '進行中の目標',
+      noActiveGoals: '進行中の目標はありません。目標を設定しましょう！',
+    },
+    expensesByCategory: {
+      title: 'カテゴリ別月間支出',
+      noData: '今月の支出データはありません。',
+    }
+  },
+  transactions: {
+    title: '取引',
+    addTransactionButton: '取引を追加',
+    scanReceiptButton: 'レシートをスキャン',
+    editModalTitle: '取引を編集',
+    addModalTitle: '新しい取引を追加',
+    form: {
+        description: '説明',
+        amount: '金額',
+        date: '日付',
+        type: '種類',
+        types: {
+            expense: '支出',
+            income: '収入'
+        },
+        category: 'カテゴリ',
+        aiSuggestion: {
+            text: 'AIの提案:',
+            confidence: '信頼度',
+            accept: '承認',
+            dismiss: '拒否',
+        },
+        fillAllFieldsError: 'すべてのフィールドを入力してください。',
+        saveChangesButton: '変更を保存',
+        addButton: '取引を追加'
+    },
+    list: {
+        searchLabel: '説明で検索',
+        searchPlaceholder: '例：コーヒーショップ',
+        typeLabel: '種類',
+        allTypes: 'すべての種類',
+        income: '収入',
+        expense: '支出',
+        categoryLabel: 'カテゴリ',
+        allCategories: 'すべてのカテゴリ',
+        startDateLabel: '開始日',
+        endDateLabel: '終了日',
+        header: {
+            description: '説明',
+            amount: '金額',
+            category: 'カテゴリ',
+            date: '日付',
+            actions: 'アクション',
+        },
+        editButton: '編集',
+        deleteButton: '削除',
+        noTransactions: 'フィルターに一致する取引はありません。'
+    }
+  },
+  goals: {
+    title: '貯蓄目標',
+    filters: {
+        active: '進行中',
+        completed: '完了',
+        all: 'すべて'
+    },
+    addGoalButton: '目標を追加',
+    aiSuggestButton: '目標を提案 (AI)',
+    aiLoadingButton: '考え中...',
+    aiError: 'AIの提案を取得できませんでした。もう一度お試しください。',
+    modalTitle: '新しい目標を追加',
+    form: {
+        nameLabel: '目標名',
+        namePlaceholder: '例：バリ島への旅行',
+        targetAmountLabel: '目標金額',
+        targetAmountPlaceholder: '例：200000',
+        addButton: '目標を追加',
+        fillAllFieldsError: '名前と目標金額を入力してください。'
+    },
+    list: {
+        addFunds: '資金を追加',
+        cancel: 'キャンセル',
+        generatePlan: 'AI予算計画を作成',
+        refreshPlan: '計画を更新',
+        generating: '生成中...',
+        planError: '予算計画の作成に失敗しました。',
+        completedOn: '完了日',
+        durationText: '達成まで {{duration}} かかりました',
+        duration: {
+            day: '約1日',
+            days: '{{count}}日間',
+            month: '約1ヶ月',
+            months: '約{{count}}ヶ月',
+        },
+        aiPlanTitle: 'AI予算計画',
+        noGoals: '現在のフィルターに一致する目標はありません。',
+        addFundsSave: '保存',
+        addFundsPlaceholder: '金額',
+        remaining: '目標達成まで残り{{amount}}'
+    }
+  },
+  budgets: {
+    title: '月次予算',
+    addButton: '予算を追加',
+    editModalTitle: '予算を編集',
+    addModalTitle: '新しい予算を追加',
+    card: {
+        spent: '支出',
+        limit: '上限',
+        remaining: '残り',
+        overBudget: '予算超過',
+        editButton: '編集',
+        deleteButton: '削除'
+    },
+    list: {
+        noBudgets: "まだ予算が設定されていません。「予算を追加」をクリックして最初の予算を作成してください。"
+    },
+    form: {
+        categoryLabel: 'カテゴリ',
+        limitLabel: '月間上限',
+        limitPlaceholder: '例:50000',
+        error: 'カテゴリを選択し、0より大きい有効な上限を入力してください。',
+        saveButton: '変更を保存',
+        createButton: '予算を作成',
+        categoryExistsError: '"{{category}}" の予算は既に存在します。',
+        noCategories: '利用可能なカテゴリがありません',
+        categoryUnchangeable: '予算が作成されるとカテゴリは変更できません。'
+    }
+  },
+  recurring: {
+    title: '定期的な取引',
+    addButton: '定期取引を追加',
+    modalTitle: '新しい定期取引',
+    list: {
+        header: {
+            status: 'ステータス',
+            description: '説明',
+            amount: '金額',
+            frequency: '頻度',
+            nextDate: '次回日付',
+            actions: 'アクション'
+        },
+        deleteButton: '削除',
+        ended: '終了',
+        noRecurring: 'スケジュールされた定期取引はありません。'
+    },
+    form: {
+        descriptionLabel: '説明',
+        amountLabel: '金額',
+        typeLabel: '種類',
+        types: {
+            expense: '支出',
+            income: '収入'
+        },
+        categoryLabel: 'カテゴリ',
+        frequencyLabel: '頻度',
+        frequencies: {
+            daily: '毎日',
+            weekly: '毎週',
+            monthly: '毎月',
+            yearly: '毎年'
+        },
+        startDateLabel: '開始日',
+        endDateLabel: '終了日（任意）',
+        addButton: 'スケジュールを追加',
+        fillFieldsError: 'すべての必須フィールドを入力してください。'
+    }
+  },
+  categories: {
+    title: 'カテゴリ管理',
+    addButton: '新しいカテゴリを追加',
+    list: {
+        editButton: '編集',
+        deleteButton: '削除',
+        noCategories: 'カスタムカテゴリはまだありません。'
+    },
+    deleteConfirmation: 'カテゴリ「{{category}}」を削除してもよろしいですか？関連するすべての取引は「その他」に移動されます。',
+    deleteOtherError: "「その他」カテゴリは削除できません。",
+    modal: {
+        addTitle: '新しいカテゴリを追加',
+        editTitle: 'カテゴリを編集',
+        label: 'カテゴリ名',
+        placeholder: '例：サブスクリプション',
+        cancelButton: 'キャンセル',
+        addButton: 'カテゴリを追加',
+        saveButton: '変更を保存'
+    }
+  },
+  reports: {
+    title: '財務レポート',
+    dateRangeLabel: '期間',
+    ranges: {
+        currentMonth: '今月',
+        lastMonth: '先月',
+        last90Days: '過去90日間',
+        thisYear: '今年',
+        allTime: '全期間',
+        custom: 'カスタム範囲'
+    },
+    startDateLabel: '開始日',
+    endDateLabel: '終了日',
+    summary: {
+        totalIncome: '総収入',
+        totalExpenses: '総支出',
+        netSavings: '純貯蓄額'
+    },
+    charts: {
+        expenseBreakdown: '支出内訳',
+        incomeVsExpense: '収入 vs. 支出',
+        income: '収入',
+        expense: '支出',
+        noExpenseData: 'この期間の支出データはありません。'
+    },
+    details: {
+        title: '取引詳細',
+        header: {
+            date: '日付',
+            description: '説明',
+            category: 'カテゴリ',
+            amount: '金額'
+        },
+        noTransactions: 'この期間に取引はありません。'
+    }
+  },
+  errors: {
+    noIncomeRecorded: "現在の残高はまだ利用できません。まず収入取引を追加してください。",
+    insufficientBalance: "この取引には現在の残高が不足しています。"
+  },
+  loading: {
+    processing: '処理中...',
+    scanning: 'レシートをスキャン中...',
+    suggestingGoals: '目標を提案中...',
+    generatingPlan: 'AIプランを生成中...',
+    uploading: '写真をアップロード中...',
+  },
+  premiumFeatureLock: {
+    tooltip: 'この機能を使用するにはプレミアムにアップグレードしてください！',
+  }
+};

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.23.0"
+      }
+    }
+    </script>
+    <!-- Add Babel for in-browser JSX/TSX transpilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinPlan - AI Finance Manager</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23218C74' stroke-width='1.5' fill='none'/%3E%3Cpath d='M7 15L10 12L13 14L17 10' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 10H14' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 10V13' stroke='%23218C74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.1?plugins=typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            },
+            colors: {
+              'primary': '#218C74',
+              'secondary': '#B97A56',
+              'background': '#F9F9F9',
+              'surface': '#FFFFFF',
+              'text-primary': '#2d3748',
+              'text-secondary': '#718096',
+              'accent': '#F39C12',
+              'danger': '#c0392b',
+
+              'dark-background': '#1a202c',
+              'dark-surface': '#2d3748',
+              'dark-text-primary': '#f7fafc',
+              'dark-text-secondary': '#a0aec0',
+              'dark-border': '#4a5568',
+            },
+            keyframes: {
+              'modal-enter': {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              }
+            },
+            animation: {
+              'modal-enter': 'modal-enter 0.2s ease-out',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- The type is changed to "text/babel" and data-type="module" is added -->
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+  </body>
+</html>
